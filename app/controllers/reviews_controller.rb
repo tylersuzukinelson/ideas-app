@@ -1,6 +1,6 @@
 class ReviewsController < ApplicationController
   before_action :authorize!
-  before_action :find_answer, only: [:destroy]
+  before_action :find_review, only: [:destroy]
   def create
     @idea = Idea.find params[:idea_id]
     # answer_params = params.require(:answer).permit(:body)

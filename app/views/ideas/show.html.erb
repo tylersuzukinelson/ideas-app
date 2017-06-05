@@ -2,10 +2,33 @@
 <h3><%= @idea.title %></h3>
 <p><%= @idea.description %></p> <br />
 
-<% if current_user.id == @idea.user_id %>
-<%= link_to 'Edit', edit_idea_path(@idea) %>
-|
-<%= link_to "Delete", idea_path(@idea),
-                      method: :delete,
-                      data: {confirm: "Are you sure?"} %>
+<% if user_signed_in? %>
+  <% if current_user.id == @idea.user_id %>
+  <%= link_to 'Edit', edit_idea_path(@idea) %>
+  |
+  <%= link_to "Delete", idea_path(@idea),
+                        method: :delete,
+                        data: {confirm: "Are you sure?"} %>
+  <% end %>
 <% end %>
+
+<h2>Reviews</h2>
+<% if user_signed_in? %>
+  <!-- <%= @review.errors.full_messages.join(', ') %> -->
+  <%= form_for [@idea, @review] do |f| %>
+  <%= f.text_area :body %>
+  <%= f.submit %>
+  <% end %>
+<% end %>
+
+
+<% @reviews&.each do |review|%>
+  <div>
+    <p>
+      <%= review.body %>
+      <%= link_to "🗑", [@idea, review],
+      method: :delete, data: {confirm: 'Are you sure?'} %>
+    </p>
+    <hr>
+  </div>
+  <% end %>
