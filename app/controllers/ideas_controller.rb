@@ -1,8 +1,9 @@
 class IdeasController < ApplicationController
-  before_action :authorize, only: [:edit, :update, :destroy]
+  # before_action :authorize, only: [:edit, :update, :destroy, :create]
+  before_action :authorize, except: [:index, :show]
   before_action :find_idea, only: [:show, :destroy, :edit, :update]
   def index
-    @ideas = Idea.all
+    @ideas = Idea.recent(30)
   end
 
   def new
@@ -21,6 +22,8 @@ class IdeasController < ApplicationController
   end
 
   def show
+    @review = Review.new
+    @reviews = @idea.reviews.order(:created_at :DESC)
     # @idea = Idea.find params[:id]
   end
 
@@ -32,6 +35,7 @@ class IdeasController < ApplicationController
 
   def edit
     # @idea = Idea.find params[:id]
+    
   end
 
   def update
