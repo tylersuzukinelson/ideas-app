@@ -1,4 +1,5 @@
 <h1>Idea</h1>
+
 <h3><%= @idea.title %></h3>
 <p><%= @idea.description %></p> <br />
 
@@ -13,7 +14,7 @@
 <% end %>
 
 <h2>Reviews</h2>
-<% if user_signed_in? %>
+<% if user_signed_in? && current_user.id != @idea.user_id %>
   <!-- <%= @review.errors.full_messages.join(', ') %> -->
   <%= form_for [@idea, @review] do |f| %>
   <%= f.text_area :body %>
@@ -23,12 +24,26 @@
 
 
 <% @reviews&.each do |review|%>
-  <div>
-    <p>
-      <%= review.body %>
-      <%= link_to "🗑", [@idea, review],
-      method: :delete, data: {confirm: 'Are you sure?'} %>
-    </p>
-    <hr>
-  </div>
+    <div>
+      <p>
+        <%= review.body %>
+        <%= link_to "Delete", [@idea, review],
+        method: :delete, data: {confirm: 'Are you sure?'} %>
+        |
+        <% if user_signed_in? && current_user.id == @idea.user_id && !review.review_flag %>
+        <%= link_to "Flag Review",
+                                review_hide_path(review),
+                                method: :patch,
+                                class: "btn btn-primary"
+                                %>
+
+          <% end %>
+
+        <% if review.review_flag %>
+          <i class="fa fa-flag" aria-hidden="true"></i>
+        <% end %>
+      </p>
+      <hr>
+    </div>
+
   <% end %>

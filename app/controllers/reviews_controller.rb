@@ -1,6 +1,6 @@
 class ReviewsController < ApplicationController
-  before_action :authorize!
-  before_action :find_review, only: [:destroy]
+  before_action :authorize
+  before_action :find_review, only: [:destroy, :flag]
   def create
     @idea = Idea.find params[:idea_id]
     # answer_params = params.require(:answer).permit(:body)
@@ -24,12 +24,20 @@ class ReviewsController < ApplicationController
     redirect_to idea_path(@idea), notice: 'Review Deleted!'
   end
 
+  def hide
+    @review = Review.find(params[:id])
+    @review.update(review_flag: !@review.review_flag)
+    @idea = @review.idea
+
+    redirect_to idea_path(@idea)
+  end
+
   private
 
   def find_review
     @review = Review.find(params[:id])
   end
   def review_params
-    params.require(:review).permit(:body)
+    params.require(:review).permit(:body, :review_flag)
   end
 end
