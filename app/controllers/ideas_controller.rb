@@ -3,7 +3,8 @@ class IdeasController < ApplicationController
   before_action :authorize, except: [:index, :show]
   before_action :find_idea, only: [:show, :destroy, :edit, :update]
   def index
-    @ideas = Idea.all
+    @idea = Idea.new
+    @ideas = Idea.all.order(created_at: :desc)
   end
 
   def new
@@ -14,7 +15,7 @@ class IdeasController < ApplicationController
     @idea = Idea.new(idea_params)
     @idea.user = current_user
     if @idea.save
-      redirect_to @idea, notice: "Idea created successfully"
+      redirect_to ideas_path(@idea), notice: "Idea created successfully"
     else
       flash[:alert] = "Please provide title"
       render :new
