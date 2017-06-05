@@ -1,5 +1,5 @@
 class ReviewsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authorize!
   before_action :find_answer, only: [:destroy]
   def create
     @idea = Idea.find params[:idea_id]

@@ -3,7 +3,7 @@ class IdeasController < ApplicationController
   before_action :authorize, except: [:index, :show]
   before_action :find_idea, only: [:show, :destroy, :edit, :update]
   def index
-    @ideas = Idea.recent(30)
+    @ideas = Idea.all
   end
 
   def new
@@ -12,7 +12,7 @@ class IdeasController < ApplicationController
   def create
     # post_params = params.require(:post).permit([:title, :content])
     @idea = Idea.new(idea_params)
-
+    @idea.user = current_user
     if @idea.save
       redirect_to @idea, notice: "Idea created successfully"
     else
@@ -23,19 +23,12 @@ class IdeasController < ApplicationController
 
   def show
     @review = Review.new
-    @reviews = @idea.reviews.order(:created_at :DESC)
+    @reviews = @idea.reviews.order(created_at: :DESC)
     # @idea = Idea.find params[:id]
-  end
-
-  def destroy
-    # @idea = Idea.find params[:id]
-    @idea.destroy
-    redirect_to ideas_path
   end
 
   def edit
     # @idea = Idea.find params[:id]
-    
   end
 
   def update
@@ -46,7 +39,13 @@ class IdeasController < ApplicationController
     else
       render :edit
     end
+  end
 
+  def destroy
+    # if can? :destroy, @idea
+    if @idea.destroy
+      redirect_to ideas_path
+    end
   end
 
   private
