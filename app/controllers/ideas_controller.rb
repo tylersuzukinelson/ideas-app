@@ -11,7 +11,6 @@ class IdeasController < ApplicationController
     @idea = Idea.new
   end
   def create
-    # post_params = params.require(:post).permit([:title, :content])
     @idea = Idea.new(idea_params)
     @idea.user = current_user
     if @idea.save

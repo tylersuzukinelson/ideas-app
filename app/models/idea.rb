@@ -8,4 +8,5 @@ class Idea < ApplicationRecord
   def like_for(user)
     likes.where(user_id: user.id).first
   end
+  
 end
