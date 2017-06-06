@@ -6,7 +6,8 @@ class Idea < ApplicationRecord
   has_many :users, through: :likes
 
   def like_for(user)
-    likes.where(user_id: user.id).first
+    # likes.where(user_id: user.id).first
+    likes.find_by_user_id(user)
   end
-  
+
 end

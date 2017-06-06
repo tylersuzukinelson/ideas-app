@@ -3,10 +3,12 @@
 <h3><%= @idea.title %></h3>
 <p><%= @idea.description %></p> <br />
 
-<% if @like.present? && @like.persisted? %>
-  <%= link_to "Un-Like", idea_like_path(@idea, @like), method: :delete %>
-<% else %>
-  <%= link_to "Like", idea_likes_path(@idea), method: :post %>
+<% if user_signed_in? && current_user.id != @idea.user_id %>
+  <% if @like.present? && @like.persisted? %>
+    <%= link_to "Un-Like", idea_like_path(@idea, @like), method: :delete %>
+  <% else %>
+    <%= link_to "Like", idea_likes_path(@idea), method: :post %>
+  <% end %>
 <% end %>
 
 <% if user_signed_in? %>
