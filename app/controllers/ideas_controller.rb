@@ -15,7 +15,7 @@ class IdeasController < ApplicationController
     @idea = Idea.new(idea_params)
     @idea.user = current_user
     if @idea.save
-      redirect_to ideas_path(@idea), notice: "Idea created successfully"
+      redirect_to ideas_path, notice: "Idea created successfully"
     else
       flash[:alert] = "Please provide title"
       render :new
