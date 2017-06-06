@@ -15,4 +15,5 @@ Rails.application.routes.draw do
   end
   patch '/review/hide/:id', to: 'reviews#hide', as: 'review_hide'
   # post '/ideas/:idea_id/reviews/:id', to: 'reviews#flag'
+  root "ideas#index"
 end

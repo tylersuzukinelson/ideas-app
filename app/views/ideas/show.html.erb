@@ -1,57 +1,46 @@
 <h1>Idea</h1>
-
 <h3><%= @idea.title %></h3>
-<p><%= @idea.description %></p> <br />
-
-<% if user_signed_in? && current_user.id != @idea.user_id %>
-  <% if @like.present? && @like.persisted? %>
-    <%= link_to "Un-Like", idea_like_path(@idea, @like), method: :delete %>
-  <% else %>
-    <%= link_to "Like", idea_likes_path(@idea), method: :post %>
-  <% end %>
-<% end %>
-
+<p><%= @idea.description %></p><br />
 <% if user_signed_in? %>
-  <% if current_user.id == @idea.user_id %>
-  <%= link_to 'Edit', edit_idea_path(@idea) %>
-  |
-  <%= link_to "Delete", idea_path(@idea),
-                        method: :delete,
-                        data: {confirm: "Are you sure?"} %>
+  <% if current_user.id != @idea.user_id %>
+    <% if @like.present? && @like.persisted? %>
+      <%= link_to "Un-Like", idea_like_path(@idea, @like), method: :delete %>
+    <% else %>
+      <%= link_to "Like", idea_likes_path(@idea), method: :post %>
+    <% end %>
+  <% else %>
+    <%= link_to 'Edit', edit_idea_path(@idea) %>
+    |
+    <%= link_to "Delete", idea_path(@idea),
+          method: :delete,
+          data: {confirm: "Are you sure?"} %>
   <% end %>
 <% end %>
-
 <h2>Reviews</h2>
 <% if user_signed_in? && current_user.id != @idea.user_id %>
-  <!-- <%= @review.errors.full_messages.join(', ') %> -->
   <%= form_for [@idea, @review] do |f| %>
-  <%= f.text_area :body %>
-  <%= f.submit %>
+    <%= f.text_area :body %>
+    <%= f.submit %>
   <% end %>
 <% end %>
-
-
 <% @reviews&.each do |review|%>
-    <div>
-      <p>
-        <%= review.body %>
-        <%= link_to "Delete", [@idea, review],
-        method: :delete, data: {confirm: 'Are you sure?'} %>
-        |
-        <% if user_signed_in? && current_user.id == @idea.user_id && !review.review_flag %>
+  <div>
+    <p>
+      <%= review.body %>
+      <%= link_to "Delete", [@idea, review],
+            method: :delete,
+            data: {confirm: 'Are you sure?'} %>
+      |
+      <% if user_signed_in? && current_user.id == @idea.user_id && !review.review_flag %>
         <%= link_to "Flag Review",
-                                review_hide_path(review),
-                                method: :patch,
-                                class: "btn btn-primary"
-                                %>
-
-          <% end %>
-
-        <% if review.review_flag %>
-          <i class="fa fa-flag" aria-hidden="true"></i>
-        <% end %>
-      </p>
-      <hr>
-    </div>
-
-  <% end %>
+              review_hide_path(review),
+              method: :patch,
+              class: "btn btn-primary" %>
+      <% end %>
+      <% if review.review_flag %>
+        <i class="fa fa-flag" aria-hidden="true"></i>
+      <% end %>
+    </p>
+    <hr />
+  </div>
+<% end %>

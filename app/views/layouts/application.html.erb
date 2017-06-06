@@ -3,26 +3,22 @@
   <head>
     <title>IdeaFactory</title>
     <%= csrf_meta_tags %>
-
-    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
     <%= stylesheet_link_tag 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' %>
   </head>
-
   <body>
-
     <% if flash.any? %>
-     <hr>
+     <hr />
      <% if flash[:notice] %>
        <div class="alert alert-success"><%= flash[:notice] %></div>
      <% elsif flash[:alert] %>
        <div class="alert alert-danger"><%= flash[:alert] %></div>
      <% end %>
-     <hr>
+     <hr />
     <% end %>
-
     <div class="container">
-      <div class="jumbotron" style="background: white;">
+      <div class="jumbotron" style="background: white">
         <div class="row">
           <div class="col-lg-2 pull-left">
             <i class="fa fa-industry" aria-hidden="true" style="font-size: 60px"></i>
@@ -36,26 +32,43 @@
               <%= link_to 'Log In', login_path %>
             <% end %>
           </div>
-
         </div>
         <div class="row">
-
           <div class="col-lg-2 pull-left">
             <%= link_to 'Idea Factory', ideas_path %>
           </div>
           <% if user_signed_in? %>
-          <div class="col-lg-2 pull-right">
-            <%#= link_to 'New_Idea', new_idea_path, class:"btn btn-default" %>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">New Idea</button>
-              <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="col-lg-2 pull-right">
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-toggle="modal"
+                data-target="#exampleModal"
+                data-whatever="@mdo"
+                >
+                New Idea
+              </button>
+              <div
+                class="modal fade"
+                id="exampleModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                >
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                        >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
                       <h4 class="modal-title" id="exampleModalLabel">New Idea</h4>
                     </div>
                     <div class="modal-body">
-
                       <%= form_for @idea do |f| %>
                         <div class="form-group">
                           <%= f.label :title, class:"control-label" %>
@@ -65,23 +78,20 @@
                           <%= f.label :description, class:"control-label" %>
                           <%= f.text_area :description, class:"form-control" %>
                         </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <%= f.submit class: 'btn btn-primary' %>
+                        </div>
+                      <% end %>
                     </div>
-
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                      <%= f.submit class: 'btn btn-primary' %>
-                    </div>
-                    <% end %>
                   </div>
                 </div>
               </div>
-          </div>
+            </div>
           <% end %>
-
         </div>
       </div>
     </div>
-
-  <%= yield %>
+    <%= yield %>
   </body>
 </html>
