@@ -23,6 +23,7 @@ class IdeasController < ApplicationController
   end
 
   def show
+    @like = @idea.like_for(current_user)
     @review = Review.new
     @reviews = @idea.reviews.order(created_at: :DESC)
     # @idea = Idea.find params[:id]
